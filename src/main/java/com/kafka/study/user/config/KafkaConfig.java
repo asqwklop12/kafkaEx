@@ -26,7 +26,7 @@ public class KafkaConfig {
     @Bean
     public <T> ProducerFactory<String, T> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put("bootstrap.servers", "localhost:9092");
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         configProps.put(ProducerConfig.ACKS_CONFIG, "all");
@@ -59,8 +59,9 @@ public class KafkaConfig {
     public <T> ConsumerFactory<String, T> kafkaConsumer() {
         Map<String, Object> consumerConfig = new HashMap<>();
         consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        consumerConfig.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
-        consumerConfig.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
+        // 아래 두개는 등록하지 않아도 정상적으로 구동은 되어짐
+        consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 //        consumerConfig.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return new DefaultKafkaConsumerFactory<>(consumerConfig);
     }
