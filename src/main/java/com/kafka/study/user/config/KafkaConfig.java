@@ -65,12 +65,14 @@ public class KafkaConfig {
         return new DefaultKafkaConsumerFactory<>(consumerConfig);
     }
 
+    // 이거 없으면 json으로 안 만들어줌
     @Bean
     public StringJsonMessageConverter jsonConverter() {
         return new StringJsonMessageConverter();
     }
 
 
+    // 팩토리로 등록
     @Bean
     public <T> ConcurrentKafkaListenerContainerFactory<String, T> consumerCommonFiled() {
         ConcurrentKafkaListenerContainerFactory<String, T> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -79,6 +81,7 @@ public class KafkaConfig {
     }
 
 
+    // 구체화
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, CreateOrderEvent> containerFactory() {
         return consumerCommonFiled();
